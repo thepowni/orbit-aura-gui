@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Shield, CreditCard, User, LogOut } from 'lucide-react';
+import { Shield, CreditCard, User } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -11,21 +11,15 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarFooter,
 } from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/AuthContext';
 
 const menuItems = [
-  { title: 'Dashboard', url: '/dashboard', icon: Home },
   { title: 'COV', url: '/cov', icon: Shield },
   { title: 'Pheurion', url: '/pheurion', icon: CreditCard },
   { title: 'Account', url: '/account', icon: User },
 ];
 
 export function AppSidebar() {
-  const { logout } = useAuth();
-
   return (
     <Sidebar className="border-r border-[#8c52ff]/20">
       <SidebarContent>
@@ -58,16 +52,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <Button
-          onClick={logout}
-          variant="ghost"
-          className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
-        >
-          <LogOut className="w-5 h-5 mr-3" />
-          Logout
-        </Button>
-      </SidebarFooter>
     </Sidebar>
   );
 }

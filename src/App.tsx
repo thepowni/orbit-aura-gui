@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import AuthPage from "@/components/auth/AuthPage";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import Dashboard from "@/pages/Dashboard";
 import COV from "@/pages/COV";
 import Pheurion from "@/pages/Pheurion";
 import Account from "@/pages/Account";
@@ -22,7 +21,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
-  return !isAuthenticated ? <>{children}</> : <Navigate to="/dashboard" />;
+  return !isAuthenticated ? <>{children}</> : <Navigate to="/cov" />;
 };
 
 const AppRoutes = () => {
@@ -38,8 +37,8 @@ const AppRoutes = () => {
           <DashboardLayout />
         </ProtectedRoute>
       }>
-        <Route index element={<Navigate to="/dashboard" />} />
-        <Route path="dashboard" element={<Dashboard />} />
+        <Route index element={<Navigate to="/cov" />} />
+        <Route path="dashboard" element={<Navigate to="/cov" />} />
         <Route path="cov" element={<COV />} />
         <Route path="pheurion" element={<Pheurion />} />
         <Route path="account" element={<Account />} />
