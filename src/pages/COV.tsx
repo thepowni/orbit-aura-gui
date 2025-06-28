@@ -132,46 +132,25 @@ const COV: React.FC = () => {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         <Card className="border-2 border-[#8c52ff]/20">
           <CardHeader>
             <CardTitle className="text-[#8c52ff]">Security Status</CardTitle>
             <CardDescription>Current protection level</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {features.map((feature, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{feature.name}</span>
-                  {feature.status === 'active' ? (
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                  ) : (
-                    <XCircle className="w-5 h-5 text-red-500" />
-                  )}
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-2 border-[#8c52ff]/20">
-          <CardHeader>
-            <CardTitle className="text-[#8c52ff]">System Health</CardTitle>
-            <CardDescription>Overall system performance</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-sm font-medium">CPU Usage</span>
-                <span className="text-sm text-green-600">45%</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-sm font-medium">Memory Usage</span>
-                <span className="text-sm text-yellow-600">67%</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-sm font-medium">Network Load</span>
-                <span className="text-sm text-green-600">23%</span>
+            <div className="flex justify-center">
+              <div className="space-y-4 w-full max-w-md">
+                {features.map((feature, index) => (
+                  <div key={index} className="flex items-center justify-between">
+                    <span className="text-sm font-medium">{feature.name}</span>
+                    {feature.status === 'active' ? (
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                    ) : (
+                      <XCircle className="w-5 h-5 text-red-500" />
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           </CardContent>
