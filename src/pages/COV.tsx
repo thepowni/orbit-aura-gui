@@ -10,21 +10,17 @@ import { Wifi, Cable, Power, PowerOff, Terminal, FileText, Send } from 'lucide-r
 import { useConnection } from '@/contexts/ConnectionContext';
 
 const COV: React.FC = () => {
-  const { isConnected, connectionType, setIsConnected, setConnectionType } = useConnection();
+  const { 
+    isConnected, 
+    connectionType, 
+    terminalHistory, 
+    logEntries,
+    setIsConnected, 
+    setConnectionType,
+    addTerminalEntry,
+    clearTerminal
+  } = useConnection();
   const [terminalInput, setTerminalInput] = useState('');
-  const [terminalHistory, setTerminalHistory] = useState<string[]>([
-    'user@cov-system:~$ COV Security System Initialized',
-    'user@cov-system:~$ System Status: Ready',
-    'user@cov-system:~$ Type "help" for available commands'
-  ]);
-  const [logEntries] = useState<string[]>([
-    '[2024-06-28 16:30:12] COV System started',
-    '[2024-06-28 16:30:15] Network interface initialized',
-    '[2024-06-28 16:30:18] Security protocols loaded',
-    '[2024-06-28 16:30:20] System ready for connections',
-    '[2024-06-28 16:31:45] Connection attempt detected',
-    '[2024-06-28 16:31:46] Authentication successful'
-  ]);
 
   const handleToggle = () => {
     if (!connectionType) {
@@ -33,8 +29,8 @@ const COV: React.FC = () => {
     }
     setIsConnected(!isConnected);
     
-    const newEntry = `[${new Date().toLocaleString()}] Connection ${!isConnected ? 'established' : 'terminated'} via ${connectionType}`;
-    setTerminalHistory(prev => [...prev, `user@cov-system:~$ ${newEntry}`]);
+    const newEntry = `user@cov-system:~$ Connection ${!isConnected ? 'established' : 'terminated'} via ${connectionType}`;
+    addTerminalEntry(newEntry);
   };
 
   const handleTerminalSubmit = () => {
@@ -51,7 +47,7 @@ const COV: React.FC = () => {
         response = `Status: ${isConnected ? 'Connected' : 'Disconnected'} | Type: ${connectionType || 'None'}`;
         break;
       case 'clear':
-        setTerminalHistory(['user@cov-system:~$ Terminal cleared']);
+        clearTerminal();
         setTerminalInput('');
         return;
       case 'connect':
@@ -70,13 +66,13 @@ const COV: React.FC = () => {
         response = `Command not found: ${terminalInput}`;
     }
     
-    setTerminalHistory(prev => [...prev, newCommand, response]);
+    addTerminalEntry(newCommand);
+    addTerminalEntry(response);
     setTerminalInput('');
   };
 
   return (
     <div className="space-y-6">
-      {/* Connection Control */}
       <div className="flex justify-center mb-8">
         <Card className="w-full max-w-md border-2 border-[#8c52ff]/20 shadow-lg">
           <CardHeader className="text-center">
@@ -111,7 +107,6 @@ const COV: React.FC = () => {
               </Select>
             </div>
 
-            {/* Big Round Connection Button */}
             <div className="flex justify-center py-4">
               <button
                 onClick={handleToggle}
@@ -146,7 +141,6 @@ const COV: React.FC = () => {
         </Card>
       </div>
 
-      {/* Terminal and Logs */}
       <Card className="border-[#8c52ff]/20">
         <CardHeader>
           <CardTitle className="text-[#8c52ff]">System Interface</CardTitle>
