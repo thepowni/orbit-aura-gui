@@ -1,22 +1,12 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Shield, CheckCircle, XCircle, User, LogOut, Wifi, Cable, Power, PowerOff } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { Wifi, Cable, Power, PowerOff } from 'lucide-react';
 
 const COV: React.FC = () => {
-  const { logout } = useAuth();
   const [connectionType, setConnectionType] = useState<string>('');
   const [isConnected, setIsConnected] = useState(false);
-
-  const features = [
-    { name: 'Advanced Encryption', status: 'active' },
-    { name: 'Real-time Monitoring', status: 'active' },
-    { name: 'Threat Detection', status: 'active' },
-    { name: 'Auto-Updates', status: 'inactive' },
-  ];
 
   const handleToggle = () => {
     if (!connectionType) {
@@ -28,40 +18,6 @@ const COV: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Account Widget at the top */}
-      <Card className="border-2 border-[#8c52ff]/20">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#8c52ff]/10 rounded-full flex items-center justify-center">
-                <User className="w-5 h-5 text-[#8c52ff]" />
-              </div>
-              <div>
-                <p className="font-medium text-gray-900">John Doe</p>
-                <p className="text-sm text-gray-500">john.doe@example.com</p>
-              </div>
-            </div>
-            <Button
-              onClick={logout}
-              variant="ghost"
-              size="sm"
-              className="text-red-600 hover:text-red-700 hover:bg-red-50"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-[#8c52ff] mb-2 flex items-center justify-center gap-3">
-          <Shield className="w-8 h-8" />
-          COV Security
-        </h1>
-        <p className="text-gray-600">Comprehensive security management</p>
-      </div>
-
       {/* Connection Control with Big Round Button */}
       <div className="flex justify-center mb-8">
         <Card className="w-full max-w-md border-2 border-[#8c52ff]/20 shadow-lg">
@@ -127,31 +83,6 @@ const COV: React.FC = () => {
                   Type: {connectionType === 'wifi' ? 'WiFi' : 'Ethernet'}
                 </p>
               )}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6">
-        <Card className="border-2 border-[#8c52ff]/20">
-          <CardHeader>
-            <CardTitle className="text-[#8c52ff]">Security Status</CardTitle>
-            <CardDescription>Current protection level</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-center">
-              <div className="space-y-4 w-full max-w-md">
-                {features.map((feature, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm font-medium">{feature.name}</span>
-                    {feature.status === 'active' ? (
-                      <CheckCircle className="w-5 h-5 text-green-500" />
-                    ) : (
-                      <XCircle className="w-5 h-5 text-red-500" />
-                    )}
-                  </div>
-                ))}
-              </div>
             </div>
           </CardContent>
         </Card>

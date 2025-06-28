@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,32 +6,44 @@ import { Crown, Star, Zap, CheckCircle } from 'lucide-react';
 const Pheurion: React.FC = () => {
   const plans = [
     {
-      name: 'Current Plan',
+      name: 'Basic',
       icon: Star,
-      price: '$29/month',
-      features: ['Basic Features', 'Standard Support', 'Limited Access'],
-      current: true,
+      price: 'Free',
+      features: ['Limited Features', 'Basic Support', 'Standard Access'],
+      current: false,
+      available: false,
     },
     {
-      name: 'Premium Plan',
+      name: 'Select',
       icon: Crown,
-      price: '$49/month',
-      features: ['Advanced Features', 'Priority Support', 'Full Access', 'Exclusive Content'],
+      price: '$29/month',
+      features: ['Enhanced Features', 'Priority Support', 'Advanced Access', 'Real-time Monitoring'],
+      current: true,
+      available: true,
+    },
+    {
+      name: 'Pheurion',
+      icon: Zap,
+      price: '$79/month',
+      features: ['Premium Features', 'VIP Support', 'Full Access', 'Advanced Analytics', 'Custom Integration'],
       current: false,
+      available: false,
     },
   ];
 
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-[#8c52ff] mb-2 flex items-center justify-center gap-3">
-          <Zap className="w-8 h-8" />
-          Pheurion Subscription
-        </h1>
-        <p className="text-gray-600">Upgrade to premium for enhanced features</p>
+        <p className="text-gray-600 mb-4">Current Plan: Select</p>
+        <Button 
+          className="bg-[#8c52ff] hover:bg-[#7a45e6] text-white mb-6"
+          size="lg"
+        >
+          See COV Plans
+        </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {plans.map((plan, index) => (
           <Card 
             key={index} 
@@ -66,11 +77,18 @@ const Pheurion: React.FC = () => {
                 className={`w-full ${
                   plan.current 
                     ? 'bg-gray-400 cursor-not-allowed' 
-                    : 'bg-[#8c52ff] hover:bg-[#7a45e6]'
+                    : !plan.available
+                      ? 'bg-red-400 cursor-not-allowed'
+                      : 'bg-[#8c52ff] hover:bg-[#7a45e6]'
                 } text-white`}
-                disabled={plan.current}
+                disabled={plan.current || !plan.available}
               >
-                {plan.current ? 'Current Plan' : 'Upgrade Now'}
+                {plan.current 
+                  ? 'Current Plan' 
+                  : !plan.available 
+                    ? 'Out of Stock' 
+                    : 'Upgrade Now'
+                }
               </Button>
             </CardContent>
           </Card>
@@ -102,7 +120,7 @@ const Pheurion: React.FC = () => {
               <div className="w-12 h-12 bg-[#8c52ff]/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Star className="w-6 h-6 text-[#8c52ff]" />
               </div>
-              <h3 className="font-semibold text-[#8c52ff] mb-2">Exclusive Features</h3>
+              <h3 className="font-semibant text-[#8c52ff] mb-2">Exclusive Features</h3>
               <p className="text-sm text-gray-600">Access to advanced tools and features</p>
             </div>
           </div>

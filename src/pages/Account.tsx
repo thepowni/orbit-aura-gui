@@ -30,14 +30,6 @@ const Account: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-[#8c52ff] mb-2 flex items-center justify-center gap-3">
-          <User className="w-8 h-8" />
-          Account Settings
-        </h1>
-        <p className="text-gray-600">Manage your account information</p>
-      </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="border-2 border-[#8c52ff]/20">
           <CardHeader>
@@ -79,6 +71,28 @@ const Account: React.FC = () => {
                 className="border-[#8c52ff]/30 focus:border-[#8c52ff]"
               />
             </div>
+
+            {/* Discord Integration */}
+            <div className="border-t pt-4 mt-4">
+              <h4 className="font-medium text-gray-900 mb-3">Discord Integration</h4>
+              <div className="space-y-2">
+                <Label>Discord Username</Label>
+                <Input
+                  value="JohnDoe#1234"
+                  disabled
+                  className="border-[#8c52ff]/30 bg-gray-50"
+                />
+              </div>
+              <div className="space-y-2 mt-2">
+                <Label>Discord ID</Label>
+                <Input
+                  value="123456789012345678"
+                  disabled
+                  className="border-[#8c52ff]/30 bg-gray-50"
+                />
+              </div>
+            </div>
+
             <div className="flex gap-2">
               {isEditing ? (
                 <>
