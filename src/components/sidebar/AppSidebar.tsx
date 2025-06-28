@@ -8,7 +8,6 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -31,7 +30,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-4">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-[#8c52ff] mb-1">COV</h2>
-          <p className="text-base text-gray-500">www.orbitnetting.com</p>
+          <p className="text-lg text-gray-500">www.orbitnetting.com</p>
         </div>
       </SidebarHeader>
 
@@ -68,11 +67,8 @@ export function AppSidebar() {
 
         <SidebarSeparator className="bg-[#8c52ff]/20" />
 
-        {/* COV Select Section */}
+        {/* Main Navigation Section */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[#8c52ff] font-bold text-2xl">
-            COV Select
-          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {mainItems.map((item) => (

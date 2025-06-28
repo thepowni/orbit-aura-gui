@@ -1,9 +1,11 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { ConnectionProvider } from "@/contexts/ConnectionContext";
 import AuthPage from "@/components/auth/AuthPage";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import COV from "@/pages/COV";
@@ -55,9 +57,11 @@ const App = () => (
       <Toaster />
       <Sonner />
       <AuthProvider>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
+        <ConnectionProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </ConnectionProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>

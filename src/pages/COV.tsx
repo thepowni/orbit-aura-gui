@@ -2,11 +2,29 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Wifi, Cable, Power, PowerOff } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Wifi, Cable, Power, PowerOff, Terminal, FileText, Send } from 'lucide-react';
+import { useConnection } from '@/contexts/ConnectionContext';
 
 const COV: React.FC = () => {
-  const [connectionType, setConnectionType] = useState<string>('');
-  const [isConnected, setIsConnected] = useState(false);
+  const { isConnected, connectionType, setIsConnected, setConnectionType } = useConnection();
+  const [terminalInput, setTerminalInput] = useState('');
+  const [terminalHistory, setTerminalHistory] = useState<string[]>([
+    'user@cov-system:~$ COV Security System Initialized',
+    'user@cov-system:~$ System Status: Ready',
+    'user@cov-system:~$ Type "help" for available commands'
+  ]);
+  const [logEntries] = useState<string[]>([
+    '[2024-06-28 16:30:12] COV System started',
+    '[2024-06-28 16:30:15] Network interface initialized',
+    '[2024-06-28 16:30:18] Security protocols loaded',
+    '[2024-06-28 16:30:20] System ready for connections',
+    '[2024-06-28 16:31:45] Connection attempt detected',
+    '[2024-06-28 16:31:46] Authentication successful'
+  ]);
 
   const handleToggle = () => {
     if (!connectionType) {
@@ -14,11 +32,51 @@ const COV: React.FC = () => {
       return;
     }
     setIsConnected(!isConnected);
+    
+    const newEntry = `[${new Date().toLocaleString()}] Connection ${!isConnected ? 'established' : 'terminated'} via ${connectionType}`;
+    setTerminalHistory(prev => [...prev, `user@cov-system:~$ ${newEntry}`]);
+  };
+
+  const handleTerminalSubmit = () => {
+    if (!terminalInput.trim()) return;
+    
+    const newCommand = `user@cov-system:~$ ${terminalInput}`;
+    let response = '';
+    
+    switch (terminalInput.toLowerCase()) {
+      case 'help':
+        response = 'Available commands: status, clear, connect, disconnect, help';
+        break;
+      case 'status':
+        response = `Status: ${isConnected ? 'Connected' : 'Disconnected'} | Type: ${connectionType || 'None'}`;
+        break;
+      case 'clear':
+        setTerminalHistory(['user@cov-system:~$ Terminal cleared']);
+        setTerminalInput('');
+        return;
+      case 'connect':
+        if (connectionType) {
+          setIsConnected(true);
+          response = 'Connection established';
+        } else {
+          response = 'Error: No connection type selected';
+        }
+        break;
+      case 'disconnect':
+        setIsConnected(false);
+        response = 'Connection terminated';
+        break;
+      default:
+        response = `Command not found: ${terminalInput}`;
+    }
+    
+    setTerminalHistory(prev => [...prev, newCommand, response]);
+    setTerminalInput('');
   };
 
   return (
     <div className="space-y-6">
-      {/* Connection Control with Big Round Button */}
+      {/* Connection Control */}
       <div className="flex justify-center mb-8">
         <Card className="w-full max-w-md border-2 border-[#8c52ff]/20 shadow-lg">
           <CardHeader className="text-center">
@@ -87,6 +145,59 @@ const COV: React.FC = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Terminal and Logs */}
+      <Card className="border-[#8c52ff]/20">
+        <CardHeader>
+          <CardTitle className="text-[#8c52ff]">System Interface</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="terminal" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="terminal" className="flex items-center gap-2">
+                <Terminal className="w-4 h-4" />
+                Terminal
+              </TabsTrigger>
+              <TabsTrigger value="logs" className="flex items-center gap-2">
+                <FileText className="w-4 h-4" />
+                Logs
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="terminal" className="space-y-4">
+              <ScrollArea className="h-64 w-full border rounded-md p-4 bg-black text-green-400 font-mono text-sm">
+                {terminalHistory.map((line, index) => (
+                  <div key={index} className="mb-1">
+                    {line}
+                  </div>
+                ))}
+              </ScrollArea>
+              <div className="flex gap-2">
+                <Input
+                  value={terminalInput}
+                  onChange={(e) => setTerminalInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleTerminalSubmit()}
+                  placeholder="Enter command..."
+                  className="font-mono"
+                />
+                <Button onClick={handleTerminalSubmit} size="icon">
+                  <Send className="w-4 h-4" />
+                </Button>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="logs">
+              <ScrollArea className="h-64 w-full border rounded-md p-4 bg-gray-50 font-mono text-sm">
+                {logEntries.map((entry, index) => (
+                  <div key={index} className="mb-1 text-gray-700">
+                    {entry}
+                  </div>
+                ))}
+              </ScrollArea>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   );
 };
